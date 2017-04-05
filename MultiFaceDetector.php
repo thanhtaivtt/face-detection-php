@@ -22,7 +22,7 @@
 namespace svay;
 
 
-class FaceDetector
+class MultiFaceDetector
 {
 
     public $detection_data;
@@ -30,7 +30,7 @@ class FaceDetector
 	public $tmpcanvas;
     public $face;
     public $reduced_canvas;
-	public $rect = array();
+	//public $rect = array();
 	public $count=0;
 
 
@@ -39,7 +39,7 @@ class FaceDetector
         if (is_file($detection_file)) {
             $this->detection_data = unserialize(file_get_contents($detection_file));
         } else {
-            throw new Exception("Couldn't load detection data");
+            die("Couldn't load detection data");
         }
     }
 
@@ -61,7 +61,7 @@ class FaceDetector
 
         } else {
 
-            throw new Exception("Can not load $file");
+            die("Can not load $file");
         }
 
         $im_width = imagesx($this->canvas);
@@ -130,10 +130,6 @@ class FaceDetector
     public function toJpeg()
     {
         $color = imagecolorallocate($this->canvas, 255, 0, 0); //red
-/*
-	imagecopyresampled($this->canvas, $this->canvas,$this->face['x'] ,$this->face['y'] ,$this->face['x'], $this->face['y'], $this->face['x']+$this->face['w'], $this->face['y']+$this->face['w'], $this->face['x']+$this->face['w'], $this->face['y']+$this->face['w']);
-	*/
-
         imagefilledrectangle(
             $this->canvas,
             $this->face['x'],
@@ -151,13 +147,7 @@ class FaceDetector
             $this->face['y']+ $this->face['w'],
             $color
         );
-/*
- $this->rect[] =  $this->face['x'];
- $this->rect[] =  $this->face['y'];
- $this->rect[] =  $this->face['x']+$this->face['w'];
- $this->rect[] =  $this->face['y']+$this->face['w'];
- */
-        $this->count = $this->count + 1;
+
 		
 		imagejpeg($this->tmpcanvas, 'tmpfile.jpg');
 

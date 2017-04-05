@@ -87,7 +87,7 @@ class FaceDetector
             
         } else {
 
-            throw new Exception("Can not load $file");
+            die("Can not load $file");
         }
 
         $im_width = imagesx($this->canvas);
